@@ -53,21 +53,6 @@ header("Expires: 0");
             $no++;
             $total += $row['total'];
         }
-
-        foreach($list2 as $row){
-            if(empty($row['mrbr'])){
-                echo "
-                <tr>
-                    <td>$no</td>
-                    <td>$row[kd_barang]</td>
-                    <td>".$row['jml']."</td>
-                    <td>".$row['total']." Kg</td>
-                </tr>
-                ";
-                $no++;
-                $total += $row['total'];
-            }
-        }
       ?>
         <tr>
             <td></td>

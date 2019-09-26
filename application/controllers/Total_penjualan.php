@@ -16,7 +16,7 @@ class Total_penjualan extends CI_Controller
 
 	public function index(){
 		$this->load->model("mdlaporan");
-		$data['menu'] = 11;
+		$data['menu'] = 12;
 		$data['title'] = "Total Penjualan";
 		$data['divisi'] = array(
 			"CW1" => "Citra Warna 1",
@@ -51,7 +51,7 @@ class Total_penjualan extends CI_Controller
 
 	public function detail($tgl_awal, $tgl_akhir, $divisi){
 		$this->load->model("mdlaporan");
-		$data['menu'] = 11;
+		$data['menu'] = 12;
 		$data['title'] = "Total Penjualan Cabang";
 		$data['divisi'] = "";
 		$data['divisi'] = array(
@@ -87,17 +87,15 @@ class Total_penjualan extends CI_Controller
 		}
 
 		$data['list'] = $this->mdlaporan->total_penjualan_detail($tgl_awal, $tgl_akhir, $divisi);
-		print_r($data['list']);
-		die();
 		$this->load->view('header', $data);
 		$this->load->view('total_penjualan_detail');
 		$this->load->view('footer');
 	}
 
 	public function export($tgl_awal, $tgl_akhir, $divisi){
-		// 
+		// asdasdasd
 		$this->load->model("mdlaporan");
-		$data['menu'] = 11;
+		$data['menu'] = 12;
 		$data['title'] = "Export Data";
 		$data['divisi'] = "";
 		$data['divisi'] = array(
@@ -133,13 +131,12 @@ class Total_penjualan extends CI_Controller
 		}
 
 		$data['list'] = $this->mdlaporan->total_penjualan_detail($tgl_awal, $tgl_akhir, $divisi);
-		$data['list2'] = $this->mdlaporan->total_penjualan_detail_null($tgl_awal, $tgl_akhir, $divisi);
 		$this->load->view('export-excel', $data);
 	}
 
 	public function export_all($tgl_awal, $tgl_akhir, $divisi=null){
 		$this->load->model("mdlaporan");
-		$data['menu'] = 11;
+		$data['menu'] = 12;
 		$data['title'] = "Export Data All";
 		$data['divisi'] = "";
 		$data['divisi'] = array(
@@ -162,7 +159,8 @@ class Total_penjualan extends CI_Controller
 			"CA7" => "Citra Warna 17",
 			"CA8" => "Citra Warna 18",
 			"CA9" => "Citra Warna 19",
-			"CL1" => "Citra Warna Lombok 1"
+			"CL1" => "Citra Warna Lombok 1",
+			"CS1" => "Citra Warna Makassar 1"
 		);
 
 		$data['tgl_awal'] = $tgl_awal;

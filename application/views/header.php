@@ -66,18 +66,6 @@
 			</li>
 			<?php endif ?>
 
-			<?php if($this->def->is_PU($this->def->get_current('username'))): ?>
-			<li class="<?=$this->def->compare_output($menu,11,"active")?>">
-				<a href="total_penjualan">
-				<span class="fa fa-fw fa-star"></span>
-				<span class="label">Total Penjualan</span>
-<!--
-				<span class="new">New</span>
--->
-				</a>
-			</li>
-			<?php endif ?>
-
 			<li class="<?=$this->def->compare_output($menu,3,"active")?>">
 				<a href="trash">
 				<span class="fa fa-fw fa-trash"></span>

@@ -137,15 +137,6 @@ class Mdlaporan extends CI_Model {
 		return $q->row_array();
 	}
 
-
-
-
-
-
-
-
-
-
 	public function get_rule(){
 		$this->db->where("stat",1);
 		$this->db->select("id, rule_name");
@@ -239,22 +230,39 @@ class Mdlaporan extends CI_Model {
 
 	public function total_penjualan($tgl_awal, $tgl_akhir, $divisi){
 		if(empty($divisi)){
-			$sql = "SELECT SUM(a.jml*a.brt) AS ttl_jml, a.divisi FROM tb_history_jual a LEFT JOIN tb_kode_barang b ON a.kd_barang = b.kdbr WHERE a.tgl BETWEEN '$tgl_awal' AND '$tgl_akhir' GROUP BY(a.divisi) ORDER BY(ttl_jml) DESC";
+			// $sql = "SELECT SUM(a.jml*a.brt) AS ttl_jml, a.divisi FROM tb_history_jual a LEFT JOIN tb_kode_barang b ON a.kd_barang = b.kdbr WHERE a.tgl BETWEEN '$tgl_awal' AND '$tgl_akhir' GROUP BY(a.divisi) ORDER BY(ttl_jml) DESC";
+
+			$this->db->select('SUM(jml * brt) AS ttl_jml, divisi');
+			$this->db->from('tb_history_jual');
+			$this->db->where('tb_history_jual.tgl >=', $tgl_awal);
+			$this->db->where('tb_history_jual.tgl <=', $tgl_akhir);
+			$this->db->group_by('divisi');
+			$this->db->order_by('ttl_jml', 'desc');
 		}else{
-			$sql = "SELECT SUM(a.jml*a.brt) AS ttl_jml, a.divisi FROM tb_history_jual a LEFT JOIN tb_kode_barang b ON a.kd_barang = b.kdbr WHERE a.tgl BETWEEN '$tgl_awal' AND '$tgl_akhir' AND a.divisi LIKE '$divisi' GROUP BY(a.divisi)";
+			// $sql = "SELECT SUM(a.jml*a.brt) AS ttl_jml, a.divisi FROM tb_history_jual a LEFT JOIN tb_kode_barang b ON a.kd_barang = b.kdbr WHERE a.tgl BETWEEN '$tgl_awal' AND '$tgl_akhir' AND a.divisi LIKE '$divisi' GROUP BY(a.divisi)";
+
+			$this->db->select('SUM(jml * brt) AS ttl_jml, divisi');
+			$this->db->from('tb_history_jual');
+			$this->db->where('tgl >=', $tgl_awal);
+			$this->db->where('tgl <=', $tgl_akhir);
+			$this->db->like('divisi', $divisi);
+			$this->db->group_by('divisi');
 		}
 		
 
-		$run = $this->db->query($sql);
-		return $run->result_array();
+		return $this->db->get()->result_array();
 	}
 
 	public function total_penjualan_detail($tgl_awal, $tgl_akhir, $divisi){
-		$sql = "SELECT a.divisi, SUM(a.jml) as jml, SUM(a.jml*a.brt) AS total, a.kd_barang, b.mrbr FROM tb_history_jual a INNER JOIN tb_kode_barang b ON a.kd_barang = b.kdbr WHERE a.tgl BETWEEN ".$this->db->escape($tgl_awal)." AND ".$this->db->escape($tgl_akhir)." AND a.divisi = '$divisi' GROUP BY(b.mrbr)
-		";
+		$this->db->select('tb_history_jual.divisi, SUM(tb_history_jual.jml) AS jml, SUM(tb_history_jual.jml * tb_history_jual.brt) AS total, tb_history_jual.kd_barang, tb_kode_barang.mrbr');
+		$this->db->from('tb_history_jual');
+		$this->db->join('tb_kode_barang', 'tb_history_jual.kd_barang = tb_kode_barang.kdbr');
+		$this->db->where('tb_history_jual.tgl >=', $tgl_awal);
+		$this->db->where('tb_history_jual.tgl <=', $tgl_akhir);
+		$this->db->like('tb_history_jual.divisi', $divisi);
+		$this->db->group_by('tb_kode_barang.mrbr');
 
-		$run = $this->db->query($sql);
-		return $run->result_array();
+		return $this->db->get()->result_array();
 	}
 
 	public function get_score($tgl_a, $tgl_b, $divisi){

@@ -26,6 +26,7 @@ ini_set('memory_limit','2048M');
     <thead>
         <tr>
             <th>No</th>
+            <th>Kode Barang</th>
             <th>Nama Barang</th>
             <th>Jumlah Terjual</th>
             <th>Total Berat</th>
@@ -36,20 +37,26 @@ ini_set('memory_limit','2048M');
         $no = 1;
         $total = 0;
         $nama_barang = "";
+        $kd_merk = "";
         $list = $this->mdlaporan->total_penjualan_detail($tgl_awal, $tgl_akhir, $a);
         foreach($list as $row){
             $nm_barang = $this->db->where('kd_merk', $row['mrbr'])->get('tb_nama_barang')->row();
             if(!empty($nm_barang)){
                 $nama_barang = $nm_barang->rule_name;
+                $kd_merk = $nm_barang->kd_merk;
             }else{
                 $nm_barang = $this->db->where('kd_barang', $row['kd_barang'])->get('tb_nama_barang')->row();
                 if(!empty($nm_barang)){
                     $nama_barang = $nm_barang->rule_name;
+                    $kd_merk = $nm_barang->kd_barang;
+                }else{
+                    $kd_merk = $row['mrbr'];
                 }
             }
             echo "
             <tr>
                 <td>$no</td>
+                <td>".$kd_merk."</td>
                 <td>$nama_barang</td>
                 <td>".$row['jml']."</td>
                 <td>".round($row['total'],1)." Kg</td>
@@ -58,24 +65,9 @@ ini_set('memory_limit','2048M');
             $no++;
             $total += $row['total'];
         }
-
-        $list2 = $this->mdlaporan->total_penjualan_detail_null($tgl_awal, $tgl_akhir, $a);
-        foreach($list2 as $row){
-            if(empty($row['mrbr'])){
-                echo "
-                <tr>
-                    <td>$no</td>
-                    <td>$row[kd_barang]</td>
-                    <td>".$row['jml']."</td>
-                    <td>".round($row['total'],1)." Kg</td>
-                </tr>
-                ";
-                $no++;
-                $total += $row['total'];
-            }
-        }
       ?>
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td><b>Grand Total</b></td>
