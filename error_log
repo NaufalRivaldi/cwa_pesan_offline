@@ -1,0 +1,10 @@
+[31-May-2017 10:14:07 Asia/Makassar] PHP Fatal error:  Call to a member function quote() on a non-object in /home/cwabali/pesan.cwabali.com/application/models/Mdbackdoor.php on line 78
+[31-May-2017 10:14:43 Asia/Makassar] PHP Fatal error:  Call to a member function quote() on a non-object in /home/cwabali/pesan.cwabali.com/application/models/Mdbackdoor.php on line 78
+[31-May-2017 10:31:50 Asia/Makassar] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::quote() in /home/cwabali/pesan.cwabali.com/application/models/Mdbackdoor.php on line 91
+[14-Jun-2017 10:46:35 Asia/Makassar] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::quote() in /home/cwabali/pesan.cwabali.com/application/controllers/Laporan.php on line 12
+[14-Jun-2017 10:46:43 Asia/Makassar] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::quote() in /home/cwabali/pesan.cwabali.com/application/controllers/Laporan.php on line 12
+[14-Jun-2017 10:55:50 Asia/Makassar] PHP Parse error:  syntax error, unexpected '$cek' (T_VARIABLE) in /home/cwabali/pesan.cwabali.com/application/controllers/Laporan.php on line 63
+[14-Jun-2017 11:27:34 Asia/Makassar] PHP Parse error:  syntax error, unexpected end of file, expecting function (T_FUNCTION) in /home/cwabali/pesan.cwabali.com/application/controllers/Laporan.php on line 195
+[27-Jul-2018 15:10:39 Asia/Makassar] PHP Parse error:  syntax error, unexpected 'fa' (T_STRING) in /home/cwabalic/pesan.cwabali.com/application/models/Def.php on line 393
+[09-May-2019 09:51:30 Asia/Makassar] PHP Fatal error:  Maximum execution time of 300 seconds exceeded in /home/cwabalic/pesan.cwabali.com/system/database/drivers/mysqli/mysqli_driver.php on line 202
+[09-Jul-2019 15:22:29 Asia/Makassar] PHP Fatal error:  Call to undefined method Mdlaporan::total_penjualan_detail_null() in /home/cwabalic/pesan.cwabali.com/application/views/export-excel-all.php on line 62

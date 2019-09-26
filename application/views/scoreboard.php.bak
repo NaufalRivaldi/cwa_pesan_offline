@@ -1,0 +1,119 @@
+<h2>Scoreboard Penjualan Karyawan</h2>
+<?php
+$last = $this->def->get_setting("last_update");
+$tgl_form = date("Y-m-d", strtotime($this->mdlaporan->better_tgl()));
+?>
+<div>
+	Last update : <strong><?=$this->def->indo_date($last)?></strong>
+</div>
+
+<form action="" method="get" class="form-horizontal well">
+	<div class="row">
+		<div class="col-sm-4">
+			<label for="dari">Dari Tanggal</label>
+			<input type="date" id="dari" name="dari" class="form-control" value="<?php if(isset($_GET['dari'])){echo $_GET['dari'];}else{echo $tgl_form;}?>">
+		</div>
+		<div class="col-sm-4">
+			<label for="sampai">Sampai Tanggal</label>
+			<input type="date" id="sampai" name="sampai" value="<?php if(isset($_GET['sampai'])){echo $_GET['sampai'];}else{echo $tgl_form;}?>" class="form-control">
+		</div>
+		<div class="col-sm-4">
+			<label for="dvs">Divisi</label>
+			<select name="divisi" id="dvs" class="form-control">
+				<option value="">- Semua Divisi -</option>
+				<?php
+				$list_divisi = $this->mdlaporan->get_divisi();
+				$dvv = '0x';
+				if(isset($_GET['divisi'])){
+					$dvv = $_GET['divisi'];
+				}
+
+				foreach($list_divisi as $ls){
+					$sel = "";
+					if($ls == $dvv){
+						$sel = "selected";
+					}
+					echo "<option $sel value='$ls'>$ls</option>";
+				}
+				?>
+			</select>
+		</div>
+	</div>
+	<div align="center" style="padding-top:1em;">
+		<button class="btn btn-lg">Proses</button>
+	</div>
+</form>
+
+<?php
+if(isset($_GET['dari']) and isset($_GET['sampai'])){
+	$dari = date("Y-m-d",strtotime($_GET['dari']));
+	$sampai = date("Y-m-d",strtotime($_GET['sampai']));
+
+	if(strtotime($dari) > strtotime($sampai)){
+		//gw juga bingung,, intinya dituker aja
+		$temp = $dari;
+		$dari = $sampai;
+		$sampai = $temp;
+	}
+
+	$divisi = isset($_GET['divisi']) ? $_GET['divisi'] : "";
+
+	
+	$karyawan = $this->mdlaporan->karyawan_array();
+	$score_list = $this->mdlaporan->get_score($dari, $sampai, $divisi);
+	$max_score = $this->mdlaporan->get_max_score($dari, $sampai, $divisi);
+
+	echo "
+	<div class='table-data'>
+	<div class='trh'>
+		<div class='th'>No</div>
+		<div class='th'>Nama</div>
+		<div class='th'>Divisi</div>
+		<div class='th'>Skor</div>
+	</div>
+	<tbody>
+	";
+
+	$no = 1;
+	foreach($score_list as $row){
+		if(isset($karyawan[$row['divisi']][$row['kd_sales']])){
+			//kalau karyawannya ada
+			$nama = $karyawan[$row['divisi']][$row['kd_sales']];
+
+			$width = ceil(($row['total_skor'] / $max_score) * 100)."%";
+			if($width > 75)
+				$cl = "info";
+			else if($width > 50)
+				$cl = "success";
+			else if($width > 25)
+				$cl = "warning";
+			else
+				$cl = "danger";
+
+
+			echo "
+			<a href='scoreboard/detail/$row[divisi]/$row[kd_sales]?dari=$dari&sampai=$sampai&divisi=$divisi' class='tr'>
+				<div class='td'>$no</div>
+				<div class='td'>$nama ($row[kd_sales])</div>
+				<div class='td'>".$this->mdlaporan->better_division($row['divisi'])."</div>
+				<div class='td'>
+					<strong>$row[total_skor]</strong>
+					<div class=\"progress\">
+					  <div class=\"progress-bar progress-bar-$cl progress-bar-striped active\" role=\"progressbar\"
+					  aria-valuenow=\"40\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:$width\">
+					  </div>
+					</div>					
+				</div>
+			</a>
+			";
+			$no++;
+		}
+	}
+
+	echo "
+	</tbody>
+	</div>
+	";
+
+}
+?>
